@@ -22,7 +22,6 @@ import (
 	"github.com/TecharoHQ/anubis/lib/policy"
 	"github.com/TecharoHQ/anubis/lib/policy/config"
 	"github.com/TecharoHQ/anubis/web"
-	"github.com/TecharoHQ/anubis/xess"
 	"github.com/a-h/templ"
 )
 
@@ -117,7 +116,6 @@ func New(opts Options) (*Server, error) {
 	}
 
 	mux := http.NewServeMux()
-	xess.Mount(mux)
 
 	// Helper to add global prefix
 	registerWithPrefix := func(pattern string, handler http.Handler, method string) {

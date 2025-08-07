@@ -29,7 +29,7 @@ jobs:
 
       - name: Set lowercase image name
         run: |
-          echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+          echo "IMAGE=vzgreposis/anubis" >> $GITHUB_ENV
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@main
@@ -58,9 +58,8 @@ jobs:
       - name: Log into registry
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
         with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Docker meta
         id: meta
@@ -77,9 +76,3 @@ jobs:
           DOCKER_REPO: ${{ env.IMAGE }}
           SLOG_LEVEL: debug
 
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
-        with:
-          subject-name: ${{ env.IMAGE }}
-          subject-digest: ${{ steps.build.outputs.digest }}
-          push-to-registry: true
