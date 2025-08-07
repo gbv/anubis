@@ -25,9 +25,7 @@ func main() {
 
 	internal.InitSlog(*slogLevel)
 
-	koDockerRepo := "registry.hub.docker.com/vzgreposis"
-
-	setOutput("docker_image", "vzgreposis/anubis")
+	koDockerRepo := "vzgreposis/"
 
 	version, err := run("git describe --tags --always --dirty")
 	if err != nil {
@@ -50,18 +48,15 @@ func main() {
 	os.Setenv("SOURCE_DATE_EPOCH", commitTimestamp)
 	os.Setenv("VERSION", version)
 
-	setOutput("version", version)
-
 	var tags = "main,latest"
 
-	output, err := run(fmt.Sprintf("ko build --platform=all --base-import-paths --tags=%q --image-user=1000 --image-annotation=%q --image-label=%q ./cmd/anubis | tail -n1", tags, *dockerAnnotations, *dockerLabels))
+	output, err := run(fmt.Sprintf("ko build --platform=all --base-import-paths --tags=%q --image-user=1000 ./cmd/anubis | tail -n1", tags))
 	if err != nil {
 		log.Fatalf("can't run ko build, check stderr: %v", err)
 	}
 
-	sp := strings.SplitN(output, "@", 2)
+	slog.Info("ko build output", "output", output)
 
-	setOutput("digest", sp[1])
 }
 
 // run executes a command and returns the trimmed output.
