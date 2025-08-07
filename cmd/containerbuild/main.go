@@ -17,7 +17,7 @@ import (
 var (
 	dockerAnnotations = flag.String("docker-annotations", os.Getenv("DOCKER_METADATA_OUTPUT_ANNOTATIONS"), "Docker image annotations")
 	dockerLabels      = flag.String("docker-labels", os.Getenv("DOCKER_METADATA_OUTPUT_LABELS"), "Docker image labels")
-	dockerRepo        = flag.String("docker-repo", "vzgreposis/anubis", "Docker image repository for Anubis")
+	dockerRepo        = flag.String("docker-repo", "registry.hub.docker.com/vzgreposis/anubis", "Docker image repository for Anubis")
 	dockerTags        = flag.String("docker-tags", os.Getenv("DOCKER_METADATA_OUTPUT_TAGS"), "newline separated docker tags including the registry name")
 	slogLevel         = flag.String("slog-level", "INFO", "logging level (see https://pkg.go.dev/log/slog#hdr-Levels)")
 )
