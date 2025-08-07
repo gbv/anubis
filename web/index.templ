@@ -44,11 +44,11 @@ templ base(title string, body templ.Component, impressum *config.Impressum, chal
           overflow: hidden;
           margin: 1rem 0 2rem;
 					outline-offset: 2px;
-					outline: #b16286 solid 4px;
+					outline: #4c74b0 solid 4px;
 				}
 
         .bar-inner {
-            background-color: #b16286;
+            background-color: #4c74b0;
             height: 100%;
             width: 0;
             transition: width 0.25s ease-in;
@@ -94,8 +94,7 @@ templ StaticHappy(localizer *localization.SimpleLocalizer) {
 		<img
 			style="display:none;"
 			style="width:100%;max-width:256px;"
-			src={ "/.within.website/x/cmd/anubis/static/img/happy.webp?cacheBuster=" +
-    anubis.Version }
+			src={ "/.within.website/x/cmd/anubis/static/img/VZG_Logo_Schriftzug.png" }
 		/>
 		<p>{ localizer.T("static_check_endpoint") }</p>
 	</div>
