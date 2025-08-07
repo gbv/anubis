@@ -17,8 +17,6 @@ import (
 var (
 	dockerAnnotations = flag.String("docker-annotations", os.Getenv("DOCKER_METADATA_OUTPUT_ANNOTATIONS"), "Docker image annotations")
 	dockerLabels      = flag.String("docker-labels", os.Getenv("DOCKER_METADATA_OUTPUT_LABELS"), "Docker image labels")
-	dockerRepo        = flag.String("docker-repo", "registry.hub.docker.com/vzgreposis/anubis", "Docker image repository for Anubis")
-	dockerTags        = flag.String("docker-tags", os.Getenv("DOCKER_METADATA_OUTPUT_TAGS"), "newline separated docker tags including the registry name")
 	slogLevel         = flag.String("slog-level", "INFO", "logging level (see https://pkg.go.dev/log/slog#hdr-Levels)")
 )
 
@@ -28,9 +26,9 @@ func main() {
 
 	internal.InitSlog(*slogLevel)
 
-	koDockerRepo := strings.TrimSuffix(*dockerRepo, "/"+filepath.Base(*dockerRepo))
+	koDockerRepo := "registry.hub.docker.com/vzgreposis/anubis"
 
-	setOutput("docker_image", strings.SplitN(*dockerTags, "\n", 2)[0])
+	setOutput("docker_image", "vzgreposis/anubis")
 
 	version, err := run("git describe --tags --always --dirty")
 	if err != nil {
@@ -55,13 +53,9 @@ func main() {
 
 	setOutput("version", version)
 
-	if *dockerTags == "" {
-		log.Fatal("Must set --docker-tags or DOCKER_METADATA_OUTPUT_TAGS")
-	}
+	var tags = "main,latest"
 
-	var tags = strings.Split(*dockerTags, " ")
-
-	output, err := run(fmt.Sprintf("ko build --platform=all --base-import-paths --tags=%q --image-user=1000 --image-annotation=%q --image-label=%q ./cmd/anubis | tail -n1", strings.Join(tags, ","), *dockerAnnotations, *dockerLabels))
+	output, err := run(fmt.Sprintf("ko build --platform=all --base-import-paths --tags=%q --image-user=1000 --image-annotation=%q --image-label=%q ./cmd/anubis | tail -n1", tags, *dockerAnnotations, *dockerLabels))
 	if err != nil {
 		log.Fatalf("can't run ko build, check stderr: %v", err)
 	}
