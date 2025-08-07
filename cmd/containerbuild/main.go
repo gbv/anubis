@@ -7,7 +7,6 @@ import (
 	"log/slog"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 
 	"github.com/TecharoHQ/anubis/internal"
@@ -26,7 +25,7 @@ func main() {
 
 	internal.InitSlog(*slogLevel)
 
-	koDockerRepo := "registry.hub.docker.com/vzgreposis/anubis"
+	koDockerRepo := "registry.hub.docker.com/vzgreposis"
 
 	setOutput("docker_image", "vzgreposis/anubis")
 
